@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Memory Game</title>
     <style>
@@ -32,7 +31,6 @@
 
         </style>
 </head>
-
 <body>
     <div id="wrapper">
         <div id="start" class="btn">Start</div>
@@ -75,6 +73,7 @@
                 html += '<img id="cardz' + x + '"src="images/board.png" onclick="pickCard(' + x + ',this)" class="flipImage"></div></div>';
 
             }
+
             gameBoard.innerHTML = html;
 
         }
@@ -82,6 +81,7 @@
 
             return array.indexOf(v) > -1;
         }
+
         function cardFlip(t, ti) {
 
             t.src = "images/" + tileArray[ti];
@@ -89,6 +89,7 @@
             console.log(tileFlippedOver);
 
         }
+
         function hideCard() {
             for (var x = 0; x < 2; x++) {
                 var vid = tileFlippedOver.pop();
@@ -96,23 +97,23 @@
                 console.log("vid:" + vid);
 
             }
+
             clearInterval(timer);
             playLockout = false;
             cardFlipped = -1;
 
         }
+
         function checkSrc(v) {
             var v = document.getElementById(v).src;
             return v;
         }
+
         function pickCard(tileIndex, t) {
-
-
             //check if it is already flipped
             if (!inArray(t.id, tileFlippedOver) && !playLockout) {
 
                 console.log("not in array");
-
                 if (cardFlipped >= 0) {
                     cardFlip(t, tileIndex);
                     var secondCard = tileIndex;
@@ -132,10 +133,13 @@
 
                     }
                 } else {
+
                     cardFlipped = tileIndex;
                     cardFlip(t, tileIndex);
                 }
+
             } else {
+
                 console.log("in array");
             }
 
@@ -160,8 +164,5 @@
             return array;
         }
     </script>
-
-
 </body>
-
 </html>
