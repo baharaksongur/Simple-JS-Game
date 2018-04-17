@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Memory Game</title>
+    <style>
+    .btn {
+      background: #3498db;
+      text-align: center;
+      -webkit-border-radius: 28;
+      -moz-border-radius: 28;
+      border-radius: 28px;
+      font-family: Arial;
+      color: #ffffff;
+      font-size: 20px;
+      padding: 10px 20px 10px 20px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #3cb0fd;
+      text-decoration: none;
+    }
+
+    .flipImage{
+        width:100px;
+    }
+    .gameTile{
+        display:inline-block;
+        border:1px solid black;
+    }
+
+        </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="start" class="btn">Start</div>
+        <div id="score"></div>
+        <div id="message"></div>
+        <div id="gameboard"></div>
+    </div>
+    <script>
+        var tileImages = [];
+        var tileArray = [];
+        var tileFlippedOver = [];
+        var cardFlipped = -1;
+        var startButton = document.getElementById("start");
+        var gameBoard = document.getElementById("gameboard");
+        var gamePlay = false;
+        var timer = "";
+        var playLockout = false;
+
+        //event Listeners
+        startButton.addEventListener("click", startGame);
+        //Functions
+        function startGame() {
+            startButton.style.display = "none";
+            if (!gamePlay) {
+                gamePlay = true;
+                buildArray();
+                tileArray = tileImages.concat(tileImages);
+                shuffleArray(tileArray);
+                buildBoard();
+                console.log(tileArray);
+            }
+            console.log("started");
+        }
+
+        function buildBoard() {
+            var html = "";
+            for (var x = 0; x <= (tileArray.length - 1); x++) {
+
+                html += '<div class="gameTile"><div class="gameTile">';
+                html += '<img id="cardz' + x + '"src="images/board.png" onclick="pickCard(' + x + ',this)" class="flipImage"></div></div>';
+
+            }
+            gameBoard.innerHTML = html;
+
+        }
+        function inArray(v, array) {
+
+            return array.indexOf(v) > -1;
+        }
+        function cardFlip(t, ti) {
+
+            t.src = "images/" + tileArray[ti];
+            tileFlippedOver.push(t.id);
+            console.log(tileFlippedOver);
+
+        }
+        function hideCard() {
+            for (var x = 0; x < 2; x++) {
+                var vid = tileFlippedOver.pop();
+                document.getElementById(vid).src = "images/board.png";
+                console.log("vid:" + vid);
+
+            }
+            clearInterval(timer);
+            playLockout = false;
+            cardFlipped = -1;
+
+        }
+        function checkSrc(v) {
+            var v = document.getElementById(v).src;
+            return v;
+        }
+        function pickCard(tileIndex, t) {
+
+
+            //check if it is already flipped
+            if (!inArray(t.id, tileFlippedOver) && !playLockout) {
+
+                console.log("not in array");
+
+                if (cardFlipped >= 0) {
+                    cardFlip(t, tileIndex);
+                    var secondCard = tileIndex;
+                    playLockout = true;
+                    if (checkSrc(tileFlippedOver[tileFlippedOver.length - 1]) == checkSrc(tileFlippedOver[tileFlippedOver.length - 2])) {
+                        //Match
+                        console.log("Match");
+                        playLockout = false;
+                        cardFlipped = -1;
+
+
+                    } else {
+                        // No match
+                        console.log("No match");
+                        timer = setInterval(hideCard, 3000);
+
+
+                    }
+                } else {
+                    cardFlipped = tileIndex;
+                    cardFlip(t, tileIndex);
+                }
+            } else {
+                console.log("in array");
+            }
+
+        }
+
+        function buildArray() {
+            for (var x = 1; x < 7; x++) {
+                tileImages.push(x + ".jpg");
+            }
+        }
+
+        function shuffleArray(array) {
+
+            for (var x = array.length - 1; x > 0; x--) {
+                var holder = Math.floor(Math.random() * (x + 1));
+                var itemValue = array[x];
+                array[x] = array[holder];
+                array[holder] = itemValue;
+                console.log(itemValue);
+            }
+
+            return array;
+        }
+    </script>
+
+
+</body>
+
+</html>
