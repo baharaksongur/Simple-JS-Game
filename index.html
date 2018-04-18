@@ -22,7 +22,9 @@
     }
 
     .flipImage{
-        width:100px;
+        width:200px;
+        height: 200px;
+        vertical-align: middle;
     }
     .gameTile{
         display:inline-block;
@@ -69,8 +71,13 @@
             var html = "";
             for (var x = 0; x <= (tileArray.length - 1); x++) {
 
+               
+
                 html += '<div class="gameTile"><div class="gameTile">';
                 html += '<img id="cardz' + x + '"src="images/board.png" onclick="pickCard(' + x + ',this)" class="flipImage"></div></div>';
+                if((x != 0) && (x % 4 == 3)) {
+                    html += "<br>";
+                }
 
             }
 
